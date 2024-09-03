@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
+    const navigate=useNavigate();
     const [formData, setFormData] = useState({
-        name: '',
         email: '',
         password: ''
     });
@@ -16,37 +18,40 @@ const Signup = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData); // You can now use formData as needed
+        try {
+            // Send formData directly, not wrapped in another object
+            const adduser = await axios.post('/api/login', formData);
+            const response =await adduser.data;
+            console.log(response)
+            if (response.success==true) {
+                console.log(response.message);
+                toast.success(response.message);
+                navigate('/dashboard');
+            }
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
     };
+    
 
     return (
-        <div className="flex font-poppins items-center justify-center dark:bg-gray-900 min-w-screen max-h-screen">
+        <div className="flex font-poppins items-center justify-center  min-w-screen max-h-screen">
             <div className="grid gap-8">
                 <div id="back-div" className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4">
-                    <div className="border-[20px] border-transparent rounded-[20px] dark:bg-gray-900 bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">
-                        <h1 className="pt-2 pb-2 font-bold text-5xl dark:text-gray-400 text-center cursor-default">
+                    <div className="border-[20px] border-transparent rounded-[20px]  bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">
+                        <h1 className="pt-2 pb-2 font-bold text-5xl  text-center cursor-default">
                             Login
                         </h1>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
-                                <label htmlFor="name" className="mb-2 dark:text-gray-400 text-lg">Name</label>
-                                <input
-                                    id="name"
-                                    className="border dark:bg-indigo-700 dark:text-gray-300 dark:border-gray-700 p-3 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
-                                    type="text"
-                                    placeholder="Name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
+                            
                             <div>
                                 <label htmlFor="email" className="mb-2 dark:text-gray-400 text-lg">Email</label>
                                 <input
                                     id="email"
-                                    className="border dark:bg-indigo-700 dark:text-gray-300 dark:border-gray-700 p-3 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
+                                    className="border  p-3 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
                                     type="email"
                                     placeholder="Email"
                                     value={formData.email}
@@ -58,7 +63,7 @@ const Signup = () => {
                                 <label htmlFor="password" className="mb-2 dark:text-gray-400 text-lg">Password</label>
                                 <input
                                     id="password"
-                                    className="border dark:bg-indigo-700 dark:text-gray-300 dark:border-gray-700 p-3 mb-2 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
+                                    className="border  p-3 mb-2 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
                                     type="password"
                                     placeholder="Password"
                                     value={formData.password}
