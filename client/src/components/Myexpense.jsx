@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { MdDelete } from "react-icons/md";
+import toast from 'react-hot-toast'
 
 const Myexpense = () => {
   const [users, setUsers] = useState([]);
@@ -15,10 +17,24 @@ const Myexpense = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [users]);
 
-  console.log(users); // Log users data to verify
-
+  
+  const onDeletehandeler=async(id)=>{
+    console.log(id)
+    try {
+      const DeletUser = await axios.delete(`/api/delete/${id}`)
+      const response = DeletUser.data
+      if (response.success) {
+          toast.success(response.message)
+      }
+  } catch (error) {
+      console.log(error)
+  }
+  }
+  if(users.length <= 0){
+      return (<p className='mt-4 text-2xl font-semibold bg-gradient-to-r from-purple-600 to-pink-700 bg-clip-text text-transparent'>You don't have any expense yet.</p>);
+  }
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 sm:p-4'>
       {users.map((group, index) => (
@@ -26,7 +42,11 @@ const Myexpense = () => {
           className="hover:animate-background rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s]"
         >
           <div className="rounded-[10px] bg-white p-4 sm:p-6 font-semibold h-full">
-            <h3 className='text-xl md:text-2xl lg:text-3xl mb-4'>{group.name}</h3>
+
+            <div className='flex justify-between'>
+              <h3 className='text-xl md:text-2xl lg:text-3xl mb-4'>{group.name}</h3>
+              <button type='submit' className=' h-8 px-2 rounded bg-red-50' onClick={()=>onDeletehandeler(group._id)}><MdDelete className='text-red-600 text-xl' /></button>
+            </div>
             <div className='mt-4'>
               <div className='flex justify-between '>
                 <p className='font-bold text-start w-1/3'>Name</p>

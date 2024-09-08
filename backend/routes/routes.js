@@ -10,6 +10,7 @@ const logout = require('../controllers/logout');
 const expense = require('../controllers/expenseController/expense');
 const getExpense = require('../controllers/expenseController/getExpense');
 const getUsers = require('../controllers/alluser');
+const deleteExpense = require('../controllers/expenseController/deleteExpense');
 
 //user
 router.post('/register',userRoute);
@@ -23,5 +24,6 @@ router.get('/alluser',isLoggedin,getUsers);
 
 router.post('/addexpense',isLoggedin,expense);
 router.get('/get',isLoggedin,getExpense);
+router.delete('/delete/:id',isLoggedin,deleteExpense)
 
 module.exports= router;

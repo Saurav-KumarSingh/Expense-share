@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -9,42 +9,46 @@ const GroupExpenseForm = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
-    members: [''],  // Members array will store ObjectIds as strings
+    members: [''], // This will store user IDs
     expensedata: [{ contributer: '', item: '', amount: '' }],
   });
+  const [memberInputs, setMemberInputs] = useState(['']); // This will show emails in inputs
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const handleInputChange = (e, fieldName, index) => {
+  const handleInputChange = useCallback((e, fieldName, index) => {
     const { name, value } = e.target;
 
-    if (fieldName === 'members' || fieldName === 'expensedata') {
-      const newField = [...formData[fieldName]];
+    if (fieldName === 'members') {
+      const updatedInputs = [...memberInputs];
+      updatedInputs[index] = value;
+      setMemberInputs(updatedInputs);
 
-      if (fieldName === 'members') {
-        newField[index] = value;  // Directly store ObjectId string
-      } else {
-        newField[index][name] = value;
-      }
-      setFormData({ ...formData, [fieldName]: newField });
-
-      if (fieldName === 'members') {
-        const filtered = users.filter(user =>
-          user.email.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredUsers(filtered);
-        setDropdownOpen(true);
-      }
+      const filtered = users.filter(user =>
+        user.email.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+      setDropdownOpen(true);
+    } else if (fieldName === 'expensedata') {
+      setFormData(prevData => {
+        const newExpenseData = [...prevData.expensedata];
+        newExpenseData[index][name] = value;
+        return { ...prevData, expensedata: newExpenseData };
+      });
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData(prevData => ({ ...prevData, [name]: value }));
     }
-  };
+  }, [users, memberInputs]);
 
-  const handleOptionClick = (userId, index) => {
-    const newMembers = [...formData.members];
-    newMembers[index] = userId;  // Store ObjectId string in members array
-    setFormData({ ...formData, members: newMembers });
+  const handleOptionClick = (userId, email, index) => {
+    const updatedMembers = [...formData.members];
+    const updatedInputs = [...memberInputs];
+    updatedMembers[index] = userId; // Store the user ID
+    updatedInputs[index] = email; // Show the email in the input field
+    setFormData({ ...formData, members: updatedMembers });
+    setMemberInputs(updatedInputs);
     setDropdownOpen(false);
+    setActiveIndex(-1); // Reset active index
   };
 
   const handleKeyDown = (e, index) => {
@@ -52,22 +56,22 @@ const GroupExpenseForm = () => {
       setActiveIndex(prev => Math.min(prev + 1, filteredUsers.length - 1));
     } else if (e.key === 'ArrowUp') {
       setActiveIndex(prev => Math.max(prev - 1, 0));
-    } else if (e.key === 'Enter') {
-      if (activeIndex !== null) {
-        handleOptionClick(filteredUsers[activeIndex]._id, index);  // Use ObjectId instead of email
-      }
+    } else if (e.key === 'Enter' && activeIndex !== -1) {
+      const selectedUser = filteredUsers[activeIndex];
+      handleOptionClick(selectedUser._id, selectedUser.email, index);
     }
   };
 
   const addMemberField = () => {
-    setFormData({ ...formData, members: [...formData.members, ''] });  // Add new empty string for ObjectId
+    setFormData(prevData => ({ ...prevData, members: [...prevData.members, ''] }));
+    setMemberInputs(prevInputs => [...prevInputs, '']);
   };
 
   const addExpenseField = () => {
-    setFormData({
-      ...formData,
-      expensedata: [...formData.expensedata, { contributer: '', item: '', amount: '' }],
-    });
+    setFormData(prevData => ({
+      ...prevData,
+      expensedata: [...prevData.expensedata, { contributer: '', item: '', amount: '' }],
+    }));
   };
 
   useEffect(() => {
@@ -77,7 +81,7 @@ const GroupExpenseForm = () => {
         setUsers(response.data.users);
       } catch (error) {
         console.error('Error fetching users:', error.response ? error.response.data.message : error.message);
-        toast.error('Failed to fetch users'); // Show an error toast to the user
+        toast.error('Failed to fetch users');
       }
     };
 
@@ -88,17 +92,16 @@ const GroupExpenseForm = () => {
     e.preventDefault();
     console.log('Form data submitted:', formData);
     try {
-      const adduser = await axios.post('/api/addexpense', formData);
-      const response = adduser.data;
+      const { data: response } = await axios.post('/api/addexpense', formData);
       if (response.success) {
         console.log(response.message);
         toast.success(response.message);
-        navigate('/dashboard');
+        navigate('/dashboard/myexpense');
       }
       console.log(response);
     } catch (error) {
       console.log(error.message);
-      toast.error('Error submitting form'); // Show an error toast to the user
+      toast.error('Error submitting form');
     }
   };
 
@@ -122,12 +125,12 @@ const GroupExpenseForm = () => {
         {/* Members */}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Members</label>
-          {formData.members.map((memberId, index) => (
+          {memberInputs.map((email, index) => (
             <div key={index} className="relative">
               <input
                 type="text"
                 name="member"
-                value={users.find(user => user._id === memberId)?.email || ''}
+                value={email}
                 onChange={(e) => handleInputChange(e, 'members', index)}
                 onClick={() => setDropdownOpen(true)}
                 onBlur={() => setTimeout(() => setDropdownOpen(false), 100)}
@@ -139,7 +142,7 @@ const GroupExpenseForm = () => {
                   {filteredUsers.map((user, idx) => (
                     <li
                       key={user._id}
-                      onClick={() => handleOptionClick(user._id, index)}  // Use ObjectId
+                      onClick={() => handleOptionClick(user._id, user.email, index)}
                       className={`p-2 hover:bg-gray-100 cursor-pointer ${activeIndex === idx ? 'bg-gray-200' : ''}`}
                     >
                       {user.email}

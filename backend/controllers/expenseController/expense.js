@@ -74,7 +74,7 @@ const createExpense = async (req, res) => {
         );
 
         // Send response
-        res.status(200).json({ success: true, expense, message: 'Expense created and users updated successfully' });
+        res.status(200).json({ success: true, expense, message: 'Expense created successfully' });
 
     } catch (error) {
         console.error('Error creating expense:', error);

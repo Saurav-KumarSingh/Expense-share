@@ -24,9 +24,9 @@ const Signup = () => {
             // Send formData directly, not wrapped in another object
             const adduser = await axios.post('/api/login', formData);
             const response =await adduser.data;
-            console.log(response)
+            // console.log(response)
             if (response.success==true) {
-                console.log(response.message);
+                // console.log(response.message);
                 toast.success(response.message);
                 navigate('/dashboard');
             }
