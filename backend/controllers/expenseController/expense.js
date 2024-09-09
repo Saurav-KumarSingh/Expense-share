@@ -12,8 +12,8 @@
 //         const expense = await expensemodel.create({ expensedata ,name,user:user._id});
 //         await expense.members.push(user._id,members);
 //         await expense.save();
-        
-        
+
+
 //         await user.groupName.push(expense._id);
 //         await user.save();
 
@@ -46,7 +46,7 @@ const createExpense = async (req, res) => {
         const { expensedata, name, members } = req.body;
 
         // Log the members to check if it's an array
-        console.log('Received members:', members,req.user);
+        // console.log('Received members:', members,req.user);
 
         // Check if members is an array
         if (!Array.isArray(members)) {
@@ -61,13 +61,12 @@ const createExpense = async (req, res) => {
             members: [...members, req.user]  // Ensure the current user is also a member
         });
 
-        // 2. Update current user's groupName field with the new expense ID
+        // Update current user's groupName field with the new expense ID
         await usermodel.updateOne(
             { _id: req.user },
             { $addToSet: { groupName: expense._id } }  // Use $addToSet to avoid duplicates
         );
-
-        // 3. Update each member's groupName field with the new expense ID
+        //  Update each member's groupName field with the new expense ID
         await usermodel.updateMany(
             { _id: { $in: members } },
             { $addToSet: { groupName: expense._id } }  // Use $addToSet to avoid duplicates

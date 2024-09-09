@@ -108,7 +108,7 @@ const GroupExpenseForm = () => {
   return (
     <div className="max-w-2xl mx-auto mt-10 p-8 bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold text-center mb-6">Create Group Expense</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete='off'>
         {/* Group Name */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Group Name</label>
