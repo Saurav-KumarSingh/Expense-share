@@ -1,21 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const GroupExpenseForm = () => {
+const UpdateExpenseForm = () => {
   const navigate = useNavigate();
+  const { id } = useParams(); 
+  const expenseId=id
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
-    members: [''], // This will store user IDs
+    members: [''], 
     expensedata: [{ contributer: '', item: '', amount: '' }],
   });
   const [memberInputs, setMemberInputs] = useState(['']); // This will show emails in inputs
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
+  // Function to handle input changes
   const handleInputChange = useCallback((e, fieldName, index) => {
     const { name, value } = e.target;
 
@@ -40,6 +43,7 @@ const GroupExpenseForm = () => {
     }
   }, [users, memberInputs]);
 
+  // Function to handle selecting a member from the dropdown
   const handleOptionClick = (userId, email, index) => {
     const updatedMembers = [...formData.members];
     const updatedInputs = [...memberInputs];
@@ -74,25 +78,40 @@ const GroupExpenseForm = () => {
     }));
   };
 
+  // Fetch all users and the existing expense data
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUsersAndExpense = async () => {
       try {
-        const response = await axios.get('/api/alluser');
-        setUsers(response.data.users);
+        // Fetch all users
+        const userResponse = await axios.get('/api/alluser');
+        setUsers(userResponse.data.users);
+
+        // Fetch the existing expense data by expenseId
+        const expenseResponse = await axios.get(`/api/expense/${expenseId}`);
+        const expenseData = expenseResponse.data.expense;
+        
+        // Populate the form with fetched data
+        setFormData({
+          name: expenseData.name,
+          members: expenseData.members.map(member => member._id), // Store user IDs
+          expensedata: expenseData.expensedata,
+        });
+        setMemberInputs(expenseData.members.map(member => member.email)); // Display emails in input
       } catch (error) {
-        console.error('Error fetching users:', error.response ? error.response.data.message : error.message);
-        toast.error('Failed to fetch users');
+        console.error('Error fetching data:', error.response ? error.response.data.message : error.message);
+        toast.error('Failed to fetch data');
       }
     };
 
-    fetchUsers();
-  }, []);
+    fetchUsersAndExpense();
+  }, [expenseId]);
 
+  // Handle form submission for updating the expense
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Form data submitted:', formData);
     try {
-      const { data: response } = await axios.post('/api/expense', formData);
+      const { data: response } = await axios.put(`/api/expense/${expenseId}`, formData);
       if (response.success) {
         console.log(response.message);
         toast.success(response.message);
@@ -101,13 +120,13 @@ const GroupExpenseForm = () => {
       console.log(response);
     } catch (error) {
       console.log(error.message);
-      toast.error('Error submitting form');
+      toast.error('Error updating expense');
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-8 bg-white shadow-md rounded">
-      <h2 className="text-2xl font-bold text-center mb-6">Create Group Expense</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">Update Group Expense</h2>
       <form onSubmit={handleSubmit} autoComplete='off'>
         {/* Group Name */}
         <div className="mb-4">
@@ -210,7 +229,7 @@ const GroupExpenseForm = () => {
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Submit
+            Update
           </button>
         </div>
       </form>
@@ -218,4 +237,4 @@ const GroupExpenseForm = () => {
   );
 };
 
-export default GroupExpenseForm;
+export default UpdateExpenseForm;

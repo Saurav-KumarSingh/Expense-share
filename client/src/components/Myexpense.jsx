@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MdDelete } from "react-icons/md";
+import { MdDelete,MdOutlineModeEdit } from "react-icons/md";
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom';
 
 const Myexpense = () => {
   const [users, setUsers] = useState([]);
+  const navigate=useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/api/get');
+        const response = await axios.get('/api/expense');
         setUsers(response.data.user);
       } catch (error) {
         console.error('Error fetching users:', error.response ? error.response.data.message : error.message);
@@ -32,6 +34,11 @@ const Myexpense = () => {
       console.log(error)
   }
   }
+  const onEdithandeler=async(expenseId)=>{
+    console.log(expenseId)
+    navigate(`/dashboard/update-expense/${expenseId}`)
+  }
+
   if(users.length <= 0){
       return (<p className='mt-4 text-2xl font-semibold bg-gradient-to-r from-purple-600 to-pink-700 bg-clip-text text-transparent'>You don't have any expense yet.</p>);
   }
@@ -45,7 +52,10 @@ const Myexpense = () => {
 
             <div className='flex justify-between'>
               <h3 className='text-xl md:text-2xl lg:text-3xl mb-4'>{group.name}</h3>
-              <button type='submit' className=' h-8 px-2 rounded bg-red-50' onClick={()=>onDeletehandeler(group._id)}><MdDelete className='text-red-600 text-xl' /></button>
+              <div>
+              <button type='submit' className=' h-8 px-2 mx-1 rounded bg-blue-50' onClick={()=>onEdithandeler(group._id)}><MdOutlineModeEdit className='text-blue-600 text-xl' /></button>
+              <button type='submit' className=' h-8 px-2 mx-1 rounded bg-red-50' onClick={()=>onDeletehandeler(group._id)}><MdDelete className='text-red-600 text-xl' /></button>
+              </div>
             </div>
             <div className='mt-4'>
               <div className='flex justify-between '>

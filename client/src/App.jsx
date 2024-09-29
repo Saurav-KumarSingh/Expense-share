@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast'
 import Myexpense from './components/Myexpense';
 import Profile from './components/Profile';
 import IndexPage from './components/dashboard/Indexpage';
+import UpdateExpenseForm from './components/UpdateExpense';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path='/dashboard/home' element={<IndexPage />} />
             <Route path='/dashboard/create-expense' element={ <ExpenseFrom/>} />
             <Route path='/dashboard/myexpense' element={ <Myexpense/>} />
+            <Route path='/dashboard/update-expense/:id' element={ <UpdateExpenseForm/>} />
             <Route path='/dashboard/profile' element={ <Profile/>} />
           </Route>
         </Routes>
