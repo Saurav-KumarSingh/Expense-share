@@ -38,7 +38,7 @@ const Signup = () => {
     
 
     return (
-        <div className="flex font-poppins items-center justify-center  min-w-screen max-h-screen">
+        <div className="flex font-poppins items-center justify-center  min-w-screen max-h-screen mt-14">
             <div className="grid gap-8">
                 <div id="back-div" className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4">
                     <div className="border-[20px] border-transparent rounded-[20px]  bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">

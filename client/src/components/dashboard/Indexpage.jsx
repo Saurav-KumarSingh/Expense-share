@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const IndexPage = () => {
 
   const [text] = useTypewriter({
-    words: [' Family', ' Friends', ' Housemate'],
+    words: [' Family', ' Friends', ' Room-mate'],
     loop: 0
   })
 
