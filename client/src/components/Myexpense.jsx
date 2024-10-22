@@ -11,7 +11,7 @@ const Myexpense = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/api/expense');
+        const response = await axios.get('https://expense-share.onrender.com/api/expense');
         setUsers(response.data.user);
       } catch (error) {
         console.error('Error fetching users:', error.response ? error.response.data.message : error.message);
@@ -25,7 +25,7 @@ const Myexpense = () => {
   const onDeletehandeler=async(id)=>{
     console.log(id)
     try {
-      const DeletUser = await axios.delete(`/api/delete/${id}`)
+      const DeletUser = await axios.delete(`https://expense-share.onrender.com/api/delete/${id}`)
       const response = DeletUser.data
       if (response.success) {
           toast.success(response.message)
