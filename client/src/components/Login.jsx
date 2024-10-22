@@ -22,9 +22,9 @@ const Signup = () => {
         e.preventDefault();
         try {
             // Send formData directly, not wrapped in another object
-            const adduser = await axios.post('/api/login', formData);
+            const adduser = await axios.post('https://expense-share.onrender.com/api/login', formData);
             const response =await adduser.data;
-            // console.log(response)
+            console.log(response)
             if (response.success==true) {
                 // console.log(response.message);
                 toast.success(response.message);
