@@ -23,7 +23,7 @@ const Signup = () => {
     const handleSubmit =async (e) => {
         e.preventDefault();
         try {
-            const adduser = await axios.post('https://expense-share.onrender.com/api/register', formData)
+            const adduser = await axios.post('https://expense-share.onrender.com/api/register', formData,{withCredentials: true})
             const response = adduser.data
             if (response.success) {
                 console.log(response.message);
