@@ -111,7 +111,7 @@ const UpdateExpenseForm = () => {
     e.preventDefault();
     console.log('Form data submitted:', formData);
     try {
-      const { data: response } = await axios.put(`/api/expense/${expenseId}`, formData);
+      const { data: response } = await axios.put(`https://expense-share.onrender.com/api/expense/${expenseId}`, formData,{withCredentials:true});
       if (response.success) {
         console.log(response.message);
         toast.success(response.message);
