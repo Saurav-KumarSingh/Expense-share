@@ -4,7 +4,7 @@ import axios from "axios";
 // Fetch user profile
 export const fetchUser = createAsyncThunk('fetchUser', async () => {
     try {
-        const response = await axios.get('https://expense-share.onrender.com/api/userprofile');
+        const response = await axios.get('https://expense-share.onrender.com/api/userprofile',{withCredentials: true});
         return response.data;
     } catch (error) {
         throw Error(error.response ? error.response.data.message : error.message);
