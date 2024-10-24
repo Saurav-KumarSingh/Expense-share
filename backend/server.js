@@ -19,12 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions)); // Enable CORS
 
-// Check database connection
-db.then(() => {
-    console.log("Connected to the database successfully.");
-}).catch(err => {
-    console.error("Database connection error:", err);
-});
 
 // API routes
 app.use('/api', router);
