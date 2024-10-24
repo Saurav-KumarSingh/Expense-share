@@ -113,11 +113,9 @@ const UpdateExpenseForm = () => {
     try {
       const { data: response } = await axios.put(`https://expense-share.onrender.com/api/expense/${expenseId}`, formData,{withCredentials:true});
       if (response.success) {
-        console.log(response.message);
         toast.success(response.message);
         navigate('/dashboard/myexpense');
       }
-      console.log(response);
     } catch (error) {
       console.log(error.message);
       toast.error('Error updating expense');

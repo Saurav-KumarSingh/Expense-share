@@ -23,7 +23,6 @@ const Myexpense = () => {
 
   
   const onDeletehandeler=async(id)=>{
-    console.log(id)
     try {
       const DeletUser = await axios.delete(`https://expense-share.onrender.com/api/delete/${id}`,{withCredentials:true})
       const response = DeletUser.data
@@ -35,7 +34,6 @@ const Myexpense = () => {
   }
   }
   const onEdithandeler=async(expenseId)=>{
-    console.log(expenseId)
     navigate(`/dashboard/update-expense/${expenseId}`)
   }
 

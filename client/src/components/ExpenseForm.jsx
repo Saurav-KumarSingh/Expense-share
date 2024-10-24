@@ -90,15 +90,13 @@ const GroupExpenseForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form data submitted:', formData);
     try {
       const { data: response } = await axios.post('https://expense-share.onrender.com/api/expense', formData,{withCredentials:true});
       if (response.success) {
-        console.log(response.message);
+        
         toast.success(response.message);
         navigate('/dashboard/myexpense');
       }
-      console.log(response);
     } catch (error) {
       console.log(error.message);
       toast.error('Error submitting form');

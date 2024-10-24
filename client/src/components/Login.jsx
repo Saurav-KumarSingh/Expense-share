@@ -24,13 +24,12 @@ const Signup = () => {
             // Send formData directly, not wrapped in another object
             const adduser = await axios.post('https://expense-share.onrender.com/api/login', formData,{withCredentials: true});
             const response =await adduser.data;
-            console.log(response)
             if (response.success==true) {
                 // console.log(response.message);
                 toast.success(response.message);
                 navigate('/dashboard');
             }
-            console.log(response);
+            // console.log(response);
         } catch (error) {
             console.log(error);
         }
