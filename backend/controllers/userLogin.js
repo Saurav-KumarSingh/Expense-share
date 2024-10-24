@@ -12,7 +12,11 @@ const login=  async (req, res) => {
         if(result){
             const token=jwt.sign({email,userid:user._id},"secret");
             
-            res.status(200).cookie('token',token).json({message:'Successfully loged in',success:true})
+            res.status(200).cookie('token',token,{
+                httpOnly: true,
+                // secure: true, 
+                sameSite: 'None', 
+              }).json({message:'Successfully loged in',success:true})
         }else{
             res.status(500).json({message:"User doesn't exist,please create account first",success:false});
         }
