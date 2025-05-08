@@ -12,7 +12,7 @@ const isLoggedin = async (req, res, next) => {
         }
 
         // Verify and decode the token
-        jwt.verify(token, 'secret', async (err, decoded) => {
+        jwt.verify(token, `${process.env.SCRET_KEY}`, async (err, decoded) => {
             if (err) {
                 return res.status(403).json({ message: 'Invalid token, Please login again' });
             }

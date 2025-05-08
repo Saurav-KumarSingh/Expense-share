@@ -28,7 +28,7 @@ const create = async (req, res) => {
         });
 
         // Generate JWT token
-        const token = jwt.sign({ email: newUser.email, userid: newUser._id }, "secret", { expiresIn: '1h' });
+        const token = jwt.sign({ email: newUser.email, userid: newUser._id }, `${process.env.SCRET_KEY}`, { expiresIn: '1h' });
 
         // Set the token as an HTTP-only cookie
         res.cookie('token', token, {
