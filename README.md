@@ -5,7 +5,8 @@ A MERN stack application for tracking and managing personal expenses. This user-
 
 
 
-## Features
+
+## 🚀 Features
 
 - **User Authentication**: Securely sign up and log in to your account.
 - **Expense Management**: Easily add, update, or delete expense entries.
@@ -31,10 +32,14 @@ To get started with the project, follow the instructions below:
     npm install
     npm run dev
 
-##Screenshots
+## 🖼️ Screenshots
 
-<img src="screenshots/register.png" alt="Expense Tracker Login" width="700" />
-<img src="screenshots/login.png" alt="Expense Tracker Register" width="700" />
-<img src="screenshots/index.png" alt="Expense Tracker Index" width="700" />
-<img src="screenshots/addexpens.png" alt="Expense Tracker Addexpense" width="700" />
-<img src="screenshots/expense.png" alt="Expense Tracker Expense" width="700" />
+
+
+<p align="center">
+  <img src="screenshots/register.png" alt="Expense Tracker Login" width="45%" height="250px" style="margin: 20px; object-fit: cover;" />
+<img src="screenshots/login.png" alt="Expense Tracker Register" width="45%" height="250px" style="margin: 20px; object-fit: cover;"/>
+<img src="screenshots/index.png" alt="Expense Tracker Index" width="45%" height="250px" style="margin: 20px; object-fit: cover;" />
+<img src="screenshots/addexpens.png" alt="Expense Tracker Addexpense" width="45%" height="250px" style="margin: 20px; object-fit: cover;" />
+<img src="screenshots/expense.png" alt="Expense Tracker Expense" width="45%" height="250px" style="margin: 20px; object-fit: cover;" />
+</p>
