@@ -10,7 +10,7 @@ const cors = require('cors');
 const corsOptions = {
     origin: [
         "http://localhost:5173",                  // local frontend
-        "https://buyit-self.vercel.app", 
+        "https://expense-share-five.vercel.app", 
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
