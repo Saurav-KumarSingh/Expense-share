@@ -12,7 +12,6 @@ const corsOptions = {
         "http://localhost:5173",                  // local frontend
         "https://expense-share-five.vercel.app", 
     ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 };
 
