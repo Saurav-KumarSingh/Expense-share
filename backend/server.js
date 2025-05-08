@@ -8,9 +8,12 @@ const cors = require('cors');
 
 // CORS options
 const corsOptions = {
-    origin: 'https://expense-share-five.vercel.app', // Ensure this matches your frontend exactly
+    origin: [
+        "http://localhost:5173",                  // local frontend
+        "https://buyit-self.vercel.app", 
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true, // Allow credentials (cookies, authorization headers)
+    credentials: true,
 };
 
 // Middleware

@@ -77,7 +77,7 @@ const GroupExpenseForm = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://expense-share.onrender.com/api/alluser',{withCredentials:true});
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/alluser`,{withCredentials:true});
         setUsers(response.data.users);
       } catch (error) {
         console.error('Error fetching users:', error.response ? error.response.data.message : error.message);
@@ -91,7 +91,7 @@ const GroupExpenseForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data: response } = await axios.post('https://expense-share.onrender.com/api/expense', formData,{withCredentials:true});
+      const { data: response } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/expense`, formData,{withCredentials:true});
       if (response.success) {
         
         toast.success(response.message);
