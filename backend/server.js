@@ -36,3 +36,6 @@ const PORT = process.env.PORT || 5000; // Fallback to 5000 if PORT is not set
 app.listen(PORT, () => {
     console.log(`Server is started on port: ${PORT}`);
 });
+
+
+module.exports =app;
