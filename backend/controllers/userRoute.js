@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const create = async (req, res) => {
     try {
         const { fullname, email, password } = req.body;
+        // console.log({ fullname, email, password } );
+
         
         // Generate profile picture URL
         const profilePic = `https://avatar.iran.liara.run/public?username=${fullname}`;
