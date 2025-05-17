@@ -3,7 +3,13 @@
 
 A MERN stack application for tracking and managing personal expenses. This user-friendly application allows individuals to create, update, and delete their expense records, providing insights into their spending habits.
 
+## 🌐 Live Demo
 
+---
+Check out the live version of **BuyIt** here:  
+🔗 [https://expense-share-five.vercel.app/](https://expense-share-five.vercel.app/)
+
+---
 
 
 ## 🚀 Features
