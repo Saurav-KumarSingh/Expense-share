@@ -1,5 +1,5 @@
 
-# Expense tracker
+# Expense Share
 
 A MERN stack application for tracking and managing personal expenses. This user-friendly application allows individuals to create, update, and delete their expense records, providing insights into their spending habits.
 
